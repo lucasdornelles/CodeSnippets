@@ -493,3 +493,6 @@ def logout():
 
     # Redirect user to login form
     return redirect(url_for('index'))
+
+
+app.secret_key = 'a042c25e6f8b37f4f076ca0eeb1b4c3c575a8bbb158263c8'
