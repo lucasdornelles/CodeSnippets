@@ -14,7 +14,7 @@ from urllib import parse
 
 # Configure application
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET')
+app.secret_key = '\xdfn\xe4\x19Y\x9e\x19w[go\xcd\xf4Q\xdfh\x89\x1aHE\xa7dGo'
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
