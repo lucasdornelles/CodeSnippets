@@ -2,7 +2,7 @@ from string import ascii_letters, digits
 
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
-from tempfile import mkdtemp
+import os
 
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -14,6 +14,7 @@ from urllib import parse
 
 # Configure application
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET')
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -33,9 +34,6 @@ def after_request(response):
 
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
@@ -493,6 +491,3 @@ def logout():
 
     # Redirect user to login form
     return redirect(url_for('index'))
-
-
-app.secret_key = 'a042c25e6f8b37f4f076ca0eeb1b4c3c575a8bbb158263c8'
