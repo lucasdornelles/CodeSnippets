@@ -1,0 +1,6 @@
+Flask
+SQLAlchemy
+Flask-Session
+requests
+Werkzeug<1
+bcrypt

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{user.name|escape}} Profile
+{% endblock %}
+
+{% block main %}
+        <div class="container">
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <p class="lead" style="font-size: 30px;">{{user.name|escape}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <p></p>
+                    <p class="lead">About Me: </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <textarea name="about" style="border: 1px solid #ddd;
+                  border-radius: 3px;
+                  text-align: left;
+                  width: 100%;
+                  margin-top: 10px;
+                  min-height: 200px;
+                  resize: none;
+                  padding: 5px">{{user.about|escape}}</textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: center">
+                    <a class="lead" href="{{url_for('user_snippets', user_id=user.id)}}">User Snippets</a>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById("about").style.height="1px";
+            document.getElementById("about").style.height=(25+document.getElementById("about").scrollHeight)+"px";
+        </script>
+{% endblock %}

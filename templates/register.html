@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+        <form action="/register" method="post">
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="username" id="username" placeholder="Username" type="text" onkeyup="validate()">
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" id="password" placeholder="Password" type="password" onkeyup="validate()">
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" type="password" onkeyup="validate()">
+            </div>
+            <button class="btn btn-primary" id="register" type="submit" disabled="true">Register</button>
+        </form>
+        <script>
+            let button = document.querySelector("#register");
+            let username = document.querySelector("#username");
+            let password = document.querySelector("#password");
+            let confirm_password = document.querySelector("#confirm_password");
+            function validate()
+            {
+
+                if (username.value.length > 4 && password.value.length > 6 && password.value == confirm_password.value)
+                {
+                    button.disabled = false;
+                }
+                else
+                {
+                    button.disabled = true;
+                }
+            }
+        </script>
+{% endblock %}

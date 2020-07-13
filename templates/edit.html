@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{snippet.name}}
+{% endblock %}
+
+{% block main %}
+        <form action="/edit/{{snippet.id}}" method="post">
+            <div class="form-group">
+                <input class="form-control" id="name" name="name" placeholder="Snippet Name" autocomplete="off" style="width: 100%"
+                 value={{snippet.name|tojson}}>
+            </div>
+            <div class="form-group" align="right">
+                <p>Editor Mode</p>
+                <select class="form-control" id="mode" name="mode" onchange="change_mode()">
+                    <option value="text/x-java">Java</option>
+                    <option value="text/x-csrc">C</option>
+                    <option value="text/x-c++src">C++</option>
+                    <option selected value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea id="myTextArea" class="form-control" name="codeSnippet"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput"
+                       value={{snippet.get_tag_string()|tojson}} hidden="true">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="description" style="width: 100%;
+                                                                         min-height: 200px;"
+                          id="description" placeholder="Description">{{snippet.description|escape}}</textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
+        <button class="btn" onclick="location.href='/'" type="button">Cancel</button>
+        <p></p>
+        <button class="btn" onclick="location.href='{{url_for('delete_snippet', snippet_id=snippet.id)}}'" type="button">Delete Snippet</button>
+
+        <script>
+            var tags = {{ tags|tojson }};
+
+            var tagsObj = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              local: tags
+            });
+
+            $('#tags').tagsinput({
+                typeaheadjs:({
+                    hint: true,
+                    highlight: true,
+                    minLength: 1
+                },{
+                    source: tagsObj.ttAdapter()
+                })
+            });
+
+            var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("myTextArea"), {
+                mode: {{snippet.mode|tojson}},
+                lineNumbers: true,
+                indentUnit: 4,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                value: {{snippet.snippet|tojson}}
+            });
+            function change_mode()
+            {
+                let mode = document.getElementById("mode").value;
+                myCodeMirror.setOption("mode", mode);
+            }
+            myCodeMirror.setValue({{snippet.snippet|tojson}});
+            $("#mode").val({{snippet.mode|tojson}});
+
+            document.getElementById("description").style.height="1px";
+            document.getElementById("description").style.height=(25+document.getElementById("description").scrollHeight)+"px";
+
+
+        </script>
+{% endblock %}

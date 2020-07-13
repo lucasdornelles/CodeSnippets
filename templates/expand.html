@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{snippet.name}}
+{% endblock %}
+
+{% block main %}
+        {% if user and snippet.user_id == user.id %}
+            <a href="{{ url_for('edit', snippet_id=snippet.id) }}" title="edit">
+                <span class="fa fa-pencil"></span>
+            </a>
+        {% endif %}
+        {% if user and not snippet.user_id == user.id %}
+            {% if snippet in user.user_bookmarks %}
+                <a href="{{ url_for('bookmark_action', snippet_id=snippet.id, action='remove') }}"
+                   title="remove snippet from bookmarks">
+                    <span class="fa fa-bookmark"></span>
+                </a>
+            {% else %}
+                <a href="{{ url_for('bookmark_action', snippet_id=snippet.id, action='add') }}"
+                   title="add snippet to bookmarks">
+                    <span class="fa fa-bookmark-o"></span>
+                </a>
+            {% endif %}
+        {% endif %}
+        <span class="lead">
+            {{snippet.name|escape}} by
+            <a href="{{ url_for('user_profile', user_id=snippet.user_id) }}">
+                {{snippet_user|escape}}
+            </a>
+        </span>
+        <style>.CodeMirror {height: auto;
+                            margin-top: 10px;
+                            margin-bottom: 10px;}
+               .CodeMirror-scroll {min-height: 200px;}</style>
+        <textarea id="{{snippet.id}}"></textarea>
+        <div class="uncheck">
+            <input type="text" id="{{snippet.id}}tags" data-role="tagsinput" class="static"
+                   value={{snippet.get_tag_string()|tojson}} readonly>
+        </div>
+        <textarea style="border: 1px solid #ddd;
+                  border-radius: 3px;
+                  text-align: left;
+                  width: 100%;
+                  margin-top: 10px;
+                  min-height: 200px;
+                  resize: none;
+                  padding: 5px" id="description" readonly>{{snippet.description|escape}}</textarea>
+
+        <script>
+            $('#{{snippet.id}}tags').prop("disabled", true);
+            var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("{{snippet.id|tojson}}"), {
+                mode: {{snippet.mode|tojson}},
+                lineNumbers: true,
+                indentUnit: 4,
+                readOnly: true,
+                viewportMargin: Infinity
+            });
+            myCodeMirror.setValue({{snippet.snippet|tojson}});
+            document.getElementById("description").style.height="1px";
+            document.getElementById("description").style.height=(25+document.getElementById("description").scrollHeight)+"px";
+
+        </script>
+{% endblock %}
