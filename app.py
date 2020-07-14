@@ -3,7 +3,6 @@ from string import ascii_letters, digits
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 import os
-
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker, scoped_session
 from database import User, Snippet, Tag, Bookmark
@@ -14,13 +13,13 @@ from urllib import parse
 
 # Configure application
 app = Flask(__name__)
-app.secret_key = '\xdfn\xe4\x19Y\x9e\x19w[go\xcd\xf4Q\xdfh\x89\x1aHE\xa7dGo'
+app.config.from_object(os.environ['APP_SETTINGS'])
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Prepare database session, CHANGE ECHO TO FALSE IN PRODUCTION
-engine = create_engine('sqlite:///database.db', echo=False)
+engine = create_engine(os.environ['DATABASE_URL'], echo=True)
 # Use scoped_session to tie session to thread
 db_session = scoped_session(sessionmaker(bind=engine))
 
@@ -34,6 +33,7 @@ def after_request(response):
 
 
 # Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
 Session(app)
 
 

@@ -18,11 +18,11 @@ class User(Base):
 
     def __init__(self, name, password):
         self.name = name
-        self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+        self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
         self.about = ""
 
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf8'), self.password)
+        return bcrypt.checkpw(password.encode('utf8'), self.password.encode('utf8'))
 
     def update_password(self, password):
         self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())

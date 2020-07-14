@@ -5,3 +5,5 @@ requests
 Werkzeug<1
 bcrypt
 gunicorn
+psycopg2
+redis
