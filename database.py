@@ -25,7 +25,7 @@ class User(Base):
         return bcrypt.checkpw(password.encode('utf8'), self.password.encode('utf8'))
 
     def update_password(self, password):
-        self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+        self.password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
 
 
 class Tagmap(Base):
