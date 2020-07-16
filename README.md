@@ -3,8 +3,7 @@
 ### Introduction:
 CodeSnippets is a SNS like code snippets database implemented using Flask, sqlalchemy, postgresSQL and 
 codemirror as a code writing front-end api.
-A live version can be found in heroku.codeblabla
-<br>youtube explanation:
+A live version can be found in https://codesnippets0.herokuapp.com/
 
 ### Front-end:
 Code is writing using the code mirror api, tagsinput and typeahead are used for inserting and editing code snippets tags.
